@@ -3,12 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/details"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".MainActivity" />
+        android:shrinkColumns="1"
+        android:stretchColumns="1" >
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/status"
+                tools:context=".MainActivity" />
+
+            <EditText
+                android:id="@+id/name"
+               />
+        </TableRow>
+    </TableLayout>
 
 </RelativeLayout>
