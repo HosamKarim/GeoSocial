@@ -11,7 +11,7 @@
         android:showAsAction="never" />
     
     <item android:id="@+id/menu_send_request"
-        android:title="@string/item_send_request"
+        android:title="@string/send_request"
         android:orderInCategory="100"
         android:showAsAction="never" />
 
