@@ -1,5 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-   
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="100"
@@ -10,9 +9,8 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
     
-    <item android:id="@+id/menu_send_request"
-        android:title="@string/item_send_request"
+    <item android:id="@+id/menu_main"
+        android:title="@string/item_main"
         android:orderInCategory="100"
         android:showAsAction="never" />
-
 </menu>
