@@ -88,9 +88,11 @@ public class RegisterActivity extends Activity{
 		public void onClick(View v) {
 			if(!name.getText().toString().equals("") && !number.getText().toString().equals("")) {
 				registerOnServer(registerId,name.getText().toString(),number.getText().toString());
+				finish();
 			} else {
 				String message = "Name and Number Fields Must be Filled Out!";
 				Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+				
 			}
 			
 		}
@@ -100,7 +102,7 @@ public class RegisterActivity extends Activity{
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.register_menu, menu);
-        //menu.findItem(R.id.options_register).setEnabled(false);
+        menu.findItem(R.id.options_register).setEnabled(false);
         return true;
     }
 
@@ -141,7 +143,7 @@ public class RegisterActivity extends Activity{
             mRegisterTask.cancel(true);
         }
         unregisterReceiver(mHandleMessageReceiver);
-        GCMRegistrar.onDestroy(this);
+        GCMRegistrar.onDestroy(getApplicationContext());
         super.onDestroy();
     }
 
@@ -157,6 +159,9 @@ public class RegisterActivity extends Activity{
         // It's also necessary to cancel the thread onDestroy(),
         // hence the use of AsyncTask instead of a raw thread.
     	if(isGCMRegistered) {
+    		final Context context = this;
+    		boolean registered = ServerUtilities.register(context, regId, name, number);
+    		/*
 	        final Context context = this;
 	        mRegisterTask = new AsyncTask<Void, Void, Void>() {
 	
@@ -184,7 +189,9 @@ public class RegisterActivity extends Activity{
 	
 	        };
 	        mRegisterTask.execute(null, null, null);
+	        */
     	}
+    
     }
 
     private final BroadcastReceiver mHandleMessageReceiver =
