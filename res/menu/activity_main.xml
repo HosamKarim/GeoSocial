@@ -14,5 +14,8 @@
         android:title="@string/send_request"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    
+    <item android:id="@+id/register"
+        android:title="REGISTER" />
 
 </menu>
