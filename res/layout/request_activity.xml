@@ -20,23 +20,10 @@
                 tools:context=".RequestActivity" />
         </TableRow>
 
-    </TableLayout>
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/details"
-        android:layout_marginTop="87dp"
-        android:layout_weight="1"
-        android:text="@string/send_button" />
-
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="48dp" >
 
@@ -49,11 +36,31 @@
             tools:context=".MainActivity" />
 
         <EditText
-            android:id="@+id/phone_field"
+            android:id="@+id/friendNumber"
             android:phoneNumber="true"
             android:layout_width="match_parent"
             android:ems="10" />
 
     </TableRow>
+    </TableLayout>
+        <Button
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/details"
+        android:layout_weight="1"
+        android:text="@string/send_button" />
+        
+    	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_below="@+id/send" >
+	  
+	    <TextView
+	        android:id="@+id/requestDisplay"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" />
 
+	</ScrollView>
 </RelativeLayout>

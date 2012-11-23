@@ -160,9 +160,9 @@ public class RegisterActivity extends Activity{
         // hence the use of AsyncTask instead of a raw thread.
     	if(isGCMRegistered) {
     		final Context context = this;
-    		boolean registered = ServerUtilities.register(context, regId, name, number);
-    		/*
-	        final Context context = this;
+    		//boolean registered = ServerUtilities.register(context, regId, name, number);
+    		
+	        
 	        mRegisterTask = new AsyncTask<Void, Void, Void>() {
 	
 	            @Override
@@ -185,11 +185,12 @@ public class RegisterActivity extends Activity{
 	            @Override
 	            protected void onPostExecute(Void result) {
 	                mRegisterTask = null;
+	                
 	            }
 	
 	        };
 	        mRegisterTask.execute(null, null, null);
-	        */
+	        
     	}
     
     }
