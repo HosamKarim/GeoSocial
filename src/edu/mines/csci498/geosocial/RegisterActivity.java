@@ -23,15 +23,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterActivity extends Activity{
 	
     TextView mDisplay;
+    EditText name;
+    EditText number; 
     AsyncTask<Void, Void, Void> mRegisterTask;
     String registerId; 
-    String name;
-    String number;
+
     boolean isGCMRegistered = false;
     
     @Override
@@ -46,14 +51,18 @@ public class RegisterActivity extends Activity{
         
         GCMRegistrar.checkDevice(this);// Make sure the device has the proper dependencies.
         
-    	Log.d("RegisterActivity", "Proper dependencies Check");
         
         GCMRegistrar.checkManifest(this);// Make sure the manifest was properly set - comment out this line
         								// while developing the app, then uncomment it when it's ready.
-        
-        Log.d("RegisterActivity", "Manifest Check");
-        
+          
         mDisplay = (TextView) findViewById(R.id.display);
+        name = (EditText) findViewById(R.id.name);
+        number = (EditText) findViewById(R.id.number);
+        
+        Button register = (Button) findViewById(R.id.register);
+        
+        register.setOnClickListener(onRegister);
+        
         registerReceiver(mHandleMessageReceiver,
                 new IntentFilter(DISPLAY_MESSAGE_ACTION));
         final String regId = GCMRegistrar.getRegistrationId(this);
@@ -68,16 +77,30 @@ public class RegisterActivity extends Activity{
                 // Skips registration.
                 mDisplay.append(getString(R.string.already_registered) + "\n");
             }          
-            
+        
         }
         
     }
     
+    private View.OnClickListener onRegister = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			if(!name.getText().toString().equals("") && !number.getText().toString().equals("")) {
+				registerOnServer(registerId,name.getText().toString(),number.getText().toString());
+			} else {
+				String message = "Name and Number Fields Must be Filled Out!";
+				Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+			}
+			
+		}
+	};
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.register_menu, menu);
+        //menu.findItem(R.id.options_register).setEnabled(false);
         return true;
     }
 
@@ -90,15 +113,16 @@ public class RegisterActivity extends Activity{
              * register or unregister the device (you will also need to
              * uncomment the equivalent options on options_menu.xml).
              */
+     
             
             case R.id.options_register:
                 GCMRegistrar.register(this, SENDER_ID);
-                name = "Robert";
-                number = "911";
-                registerOnServer(registerId,name,number);
+                String optionName = "FROM OPTIONS";
+                registerOnServer(registerId,optionName,optionName);
                 return true;
             case R.id.options_unregister:
                 GCMRegistrar.unregister(this);
+                ServerUtilities.unregister(this, registerId);
                 return true;
             case R.id.options_clear:
                 mDisplay.setText(null);
