@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ public class RequestActivity extends Activity{
 	
 	EditText friendNumber; 
 	TextView mDisplay;
+	AsyncTask<Void,Void,Void> mSendRequest; 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,8 @@ public class RequestActivity extends Activity{
 		public void onClick(View arg0) {
 			if(!friendNumber.getText().toString().equals("")) {
 				final Context context = RequestActivity.this;
-				ServerUtilities.sendFriendRequest(context,GCMRegistrar.getRegistrationId(RequestActivity.this), friendNumber.getText().toString());
+				//ServerUtilities.sendFriendRequest(context,GCMRegistrar.getRegistrationId(RequestActivity.this), friendNumber.getText().toString());
+				sendRequest(GCMRegistrar.getRegistrationId(RequestActivity.this),friendNumber.getText().toString());
 				//finish();
 			} else {
 				String message = "Friend's Number Field Must be Filled out";
@@ -60,6 +63,33 @@ public class RequestActivity extends Activity{
 			
 		}
 	};
+	
+	 private void sendRequest(final String regId, final String fNumber) {
+	        // Try to register again, but not in the UI thread.
+	        // It's also necessary to cancel the thread onDestroy(),
+	        // hence the use of AsyncTask instead of a raw thread.
+	    		final Context context = this;
+	    		//boolean registered = ServerUtilities.register(context, regId, name, number);
+	    		
+		        
+		        mSendRequest = new AsyncTask<Void, Void, Void>() {
+		
+		            @Override
+		            protected Void doInBackground(Void... params) {
+		                 ServerUtilities.sendFriendRequest(context, regId, fNumber);
+		                        
+		                return null;
+		            }
+		
+		            @Override
+		            protected void onPostExecute(Void result) {
+		            	mSendRequest = null;
+		                
+		            }
+		
+		        };
+		        mSendRequest.execute(null, null, null);
+	    }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
