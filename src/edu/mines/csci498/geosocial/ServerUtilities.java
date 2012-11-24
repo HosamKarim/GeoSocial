@@ -131,6 +131,7 @@ public final class ServerUtilities {
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         params.put("friend", friendNumber);
+        params.put("respond", "Request"); //null indicates that a request is being made (Not fullfilled) 
         try {
             post(serverUrl, params);
             //GCMRegistrar.setRegisteredOnServer(context, true);
