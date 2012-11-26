@@ -1,3 +1,6 @@
+/*NOTE: Usage of Pre-existing code provided by Google Inc. Demonstrating the usage of GCM from mobile device 
+ * The code has been modified for the use for the GeoSocial App  
+ */
 /*
  * Copyright 2012 Google Inc.
  *
@@ -17,6 +20,7 @@ package edu.mines.csci498.geosocial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 /**
  * Helper class providing methods and constants common to other classes in the
@@ -27,7 +31,7 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    public static final String SERVER_URL = "http://192.168.1.104:8080/gcm-demo";
+    public static final String SERVER_URL = "http://138.67.205.96:8080/gcm-demo";
 
     /**
      * Google API project id registered to use GCM.
@@ -63,5 +67,9 @@ public final class CommonUtilities {
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
+    }
+    
+    static void displayFeedbackToast(Context context, String message) {
+    	Toast.makeText(context,message, Toast.LENGTH_LONG).show();
     }
 }

@@ -28,6 +28,9 @@
     <string name="options_clear">Clear</string>
     <string name="options_exit">Exit</string>
     
-    <string name="friend_req_sent">Friend Request Sent</string>
-
+    <string name="friend_req_sent">Friend Request Sent!</string>
+ 	<string name="friend_req_not_found">The Friend You Were Looking For Could Not Be Found!</string>
+ 	<string name="friend_req_same">You Cannot Add Yourself As A Friend!</string>
+ 	
+ 	
 </resources>

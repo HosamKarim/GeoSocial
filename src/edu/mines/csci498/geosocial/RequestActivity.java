@@ -1,3 +1,6 @@
+/*NOTE: Usage of Pre-existing code provided by Google Inc. Demonstrating the usage of GCM from mobile device 
+ * The code has been modified for the use for the GeoSocial App  
+ */
 package edu.mines.csci498.geosocial;
 
 import static edu.mines.csci498.geosocial.CommonUtilities.DISPLAY_MESSAGE_ACTION;
@@ -105,7 +108,8 @@ public class RequestActivity extends Activity{
         @Override
         public void onReceive(Context context, Intent intent) {
             String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-            mDisplay.append(newMessage + "\n");
+            Toast.makeText(context, newMessage, Toast.LENGTH_LONG).show();
+            //mDisplay.append(newMessage + "\n");
         }
     };
 

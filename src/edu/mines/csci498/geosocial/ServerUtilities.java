@@ -1,3 +1,8 @@
+/*NOTE: Usage of Pre-existing code provided by Google Inc. Demonstrating the usage of GCM from mobile device 
+ * The code has been modified for the use for the GeoSocial App  
+ */
+
+
 /*
  * Copyright 2012 Google Inc.
  *
@@ -58,7 +63,7 @@ public final class ServerUtilities {
         params.put("regId", regId);
         params.put("name", name);
         params.put("number", number);
-
+        int status;
         long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
@@ -68,7 +73,8 @@ public final class ServerUtilities {
             try {
                 displayMessage(context, context.getString(
                         R.string.server_registering, i, MAX_ATTEMPTS));
-                post(serverUrl, params);
+                 post(serverUrl, params);
+                
                 GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.already_registered);
                 CommonUtilities.displayMessage(context, message);
@@ -132,10 +138,12 @@ public final class ServerUtilities {
         params.put("regId", regId);
         params.put("friend", friendNumber);
         params.put("respond", "Request"); //null indicates that a request is being made (Not fullfilled) 
+        int status;
         try {
             post(serverUrl, params);
             //GCMRegistrar.setRegisteredOnServer(context, true);
             String message = context.getString(R.string.friend_req_sent);
+            //CommonUtilities.displayFeedbackToast(context, message);
             CommonUtilities.displayMessage(context, message);
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still
@@ -143,8 +151,17 @@ public final class ServerUtilities {
             // We could try to unregister again, but it is not necessary:
             // if the server tries to send a message to the device, it will get
             // a "NotRegistered" error message and should unregister the device.
-            String message = context.getString(R.string.server_unregister_error,
+        	String message = context.getString(R.string.server_unregister_error,
                     e.getMessage());
+        	if(e.getMessage().equalsIgnoreCase("33")) {
+        		
+        		message = context.getString(R.string.friend_req_same);
+        		
+        	} else if (e.getMessage().equalsIgnoreCase("404")) {
+        		
+        		message = context.getString(R.string.friend_req_not_found);
+        	}
+        	//CommonUtilities.displayFeedbackToast(context, message);
             CommonUtilities.displayMessage(context, message);
         }
     }
@@ -159,7 +176,8 @@ public final class ServerUtilities {
      */
     private static void post(String endpoint, Map<String, String> params)
             throws IOException {
-        URL url;
+        URL url; 
+        int status;
         try {
             url = new URL(endpoint);
         } catch (MalformedURLException e) {
@@ -193,9 +211,9 @@ public final class ServerUtilities {
             out.write(bytes);
             out.close();
             // handle the response
-            int status = conn.getResponseCode();
+            status = conn.getResponseCode();
             if (status != 200) {
-              throw new IOException("Post failed with error code " + status);
+              throw new IOException(Integer.toString(status));
             }
         } finally {
             if (conn != null) {
@@ -203,4 +221,5 @@ public final class ServerUtilities {
             }
         }
       }
+    	
 }

@@ -49,6 +49,8 @@ public final class R {
         public static final int already_registered=0x7f04000a;
         public static final int app_name=0x7f040000;
         public static final int error_config=0x7f040009;
+        public static final int friend_req_not_found=0x7f04001b;
+        public static final int friend_req_same=0x7f04001c;
         public static final int friend_req_sent=0x7f04001a;
         public static final int gcm_deleted=0x7f040010;
         public static final int gcm_error=0x7f04000e;

@@ -1,3 +1,6 @@
+/*NOTE: Usage of Pre-existing code provided by Google Inc. Demonstrating the usage of GCM from mobile device 
+ * The code has been modified for the use for the GeoSocial App  
+ */
 package edu.mines.csci498.geosocial;
 
 
@@ -88,7 +91,7 @@ public class RegisterActivity extends Activity{
 		public void onClick(View v) {
 			if(!name.getText().toString().equals("") && !number.getText().toString().equals("")) {
 				registerOnServer(registerId,name.getText().toString(),number.getText().toString());
-				finish();
+				
 			} else {
 				String message = "Name and Number Fields Must be Filled Out!";
 				Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
@@ -146,6 +149,10 @@ public class RegisterActivity extends Activity{
         GCMRegistrar.onDestroy(getApplicationContext());
         super.onDestroy();
     }
+    
+    private void closeActivity(){
+    	finish();
+    }
 
     private void checkNotNull(Object reference, String name) {
         if (reference == null) {
@@ -185,7 +192,7 @@ public class RegisterActivity extends Activity{
 	            @Override
 	            protected void onPostExecute(Void result) {
 	                mRegisterTask = null;
-	                
+	                finish();
 	            }
 	
 	        };
@@ -200,8 +207,10 @@ public class RegisterActivity extends Activity{
         @Override
         public void onReceive(Context context, Intent intent) {
             String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-            mDisplay.append(newMessage + "\n");
+            Toast.makeText(context, newMessage, Toast.LENGTH_LONG).show();
+            //mDisplay.append(newMessage + "\n");
         }
     };
+    
 
 }
