@@ -160,6 +160,9 @@ public final class ServerUtilities {
         	} else if (e.getMessage().equalsIgnoreCase("404")) {
         		
         		message = context.getString(R.string.friend_req_not_found);
+        	} else if (e.getMessage().equalsIgnoreCase("50"))  {
+        		
+        		message = context.getString(R.string.friend_req_already);
         	}
         	//CommonUtilities.displayFeedbackToast(context, message);
             CommonUtilities.displayMessage(context, message);
