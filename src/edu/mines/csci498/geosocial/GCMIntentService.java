@@ -1,3 +1,7 @@
+/*NOTE: Usage of Pre-existing code provided by Google Inc. Demonstrating the usage of GCM from mobile device 
+ * The code has been modified for the use for the GeoSocial App  
+ */
+
 package edu.mines.csci498.geosocial;
 
 
@@ -20,6 +24,7 @@ import android.content.Context;
 
 import static  edu.mines.csci498.geosocial.CommonUtilities.SENDER_ID;
 import static edu.mines.csci498.geosocial.CommonUtilities.displayMessage;
+import static edu.mines.csci498.geosocial.CommonUtilities.REQUEST_MESSAGE;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -70,6 +75,11 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
         String message = getString(R.string.gcm_message);
+        
+        if(intent.hasExtra(REQUEST_MESSAGE)){
+        	message = intent.getStringExtra("user") + " Wants to be Friends";
+        }
+       
         displayMessage(context, message);
         // notifies user
         generateNotification(context, message);
