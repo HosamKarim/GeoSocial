@@ -165,7 +165,7 @@ public final class ServerUtilities {
         		message = context.getString(R.string.friend_req_already);
         	}
         	//CommonUtilities.displayFeedbackToast(context, message);
-            CommonUtilities.displayMessage(context, message);
+           CommonUtilities.displayMessage(context, message);
         }
     }
 

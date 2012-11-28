@@ -39,7 +39,8 @@ public class RegisterActivity extends Activity{
     EditText number; 
     AsyncTask<Void, Void, Void> mRegisterTask;
     String registerId; 
-
+    HandleMessageReceiver mHandleMessageReceiver = new HandleMessageReceiver();
+    
     boolean isGCMRegistered = false;
     
     @Override
@@ -200,17 +201,6 @@ public class RegisterActivity extends Activity{
 	        
     	}
     
-    }
-
-    private final BroadcastReceiver mHandleMessageReceiver =
-            new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-            Toast.makeText(context, newMessage, Toast.LENGTH_LONG).show();
-            //mDisplay.append(newMessage + "\n");
-        }
-    };
-    
+    }   
 
 }

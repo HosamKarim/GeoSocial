@@ -18,6 +18,7 @@
  */
 package edu.mines.csci498.geosocial;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    public static final String SERVER_URL = "http://138.67.205.96:8080/gcm-demo";
+    public static final String SERVER_URL = "http://138.67.206.173:8080/gcm-demo";
 
     /**
      * Google API project id registered to use GCM.
@@ -54,6 +55,7 @@ public final class CommonUtilities {
      */
     public static final String EXTRA_MESSAGE = "message";
 
+    public static final String REQUEST_MESSAGE = "request";
     /**
      * Notifies UI to display a message.
      * <p>
@@ -71,5 +73,23 @@ public final class CommonUtilities {
     
     static void displayFeedbackToast(Context context, String message) {
     	Toast.makeText(context,message, Toast.LENGTH_LONG).show();
+    }
+    
+    static void displayAlert(Context context, String message) {
+    	
+        Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
+        intent.putExtra("type", "Alert");
+        intent.putExtra(EXTRA_MESSAGE, message);
+        context.sendBroadcast(intent);
+    	/*
+    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);	
+    	
+    	alertDialogBuilder.setTitle("New Friend Request")
+    					  .setMessage(message);
+    	
+    	AlertDialog alertDialog = alertDialogBuilder.create();
+    	
+    	alertDialog.show();
+    					  */
     }
 }

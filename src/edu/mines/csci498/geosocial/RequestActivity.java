@@ -9,6 +9,7 @@ import static edu.mines.csci498.geosocial.CommonUtilities.EXTRA_MESSAGE;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ public class RequestActivity extends Activity{
 	EditText friendNumber; 
 	TextView mDisplay;
 	AsyncTask<Void,Void,Void> mSendRequest; 
+	HandleMessageReceiver mHandleMessageReceiver = new HandleMessageReceiver();
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,14 +105,5 @@ public class RequestActivity extends Activity{
     	return super.onOptionsItemSelected(item);
     }
     
-    private final BroadcastReceiver mHandleMessageReceiver =
-            new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-            Toast.makeText(context, newMessage, Toast.LENGTH_LONG).show();
-            //mDisplay.append(newMessage + "\n");
-        }
-    };
 
 }

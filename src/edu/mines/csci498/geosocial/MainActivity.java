@@ -2,6 +2,7 @@ package edu.mines.csci498.geosocial;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -13,8 +14,36 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        if(getIntent().hasExtra("request")) {
+    		
+    			String message = getIntent().getExtras().getString("message");
+    			createAlertDialog(message);
+        }
+        
     }
+    
+    private void createAlertDialog(String message) {
 
+    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);	
+    	
+    	alertDialogBuilder.setTitle("New Friend Request")
+    					  .setMessage(message);
+    	
+    	AlertDialog alertDialog = alertDialogBuilder.create();
+    	
+    	alertDialog.show();
+    }
+    @Override
+    public void onResume() {
+    	super.onResume(); 
+    	/*
+    	if(getIntent().hasExtra("request")) {
+    		String message = getIntent().getExtras().getString("message");
+    		createAlertDialog(message);
+    	}
+    	*/
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	getMenuInflater().inflate(R.menu.activity_main, menu);

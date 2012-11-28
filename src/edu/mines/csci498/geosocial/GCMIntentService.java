@@ -24,8 +24,10 @@ import android.content.Context;
 
 import static  edu.mines.csci498.geosocial.CommonUtilities.SENDER_ID;
 import static edu.mines.csci498.geosocial.CommonUtilities.displayMessage;
+import static edu.mines.csci498.geosocial.CommonUtilities.displayAlert;
 import static edu.mines.csci498.geosocial.CommonUtilities.REQUEST_MESSAGE;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -79,19 +81,20 @@ public class GCMIntentService extends GCMBaseIntentService {
         if(intent.hasExtra(REQUEST_MESSAGE)){
         	message = intent.getStringExtra("user") + " Wants to be Friends";
         }
-       
-        displayMessage(context, message);
+        
+        //displayAlert(context, message);
+        //displayMessage(context, message);
         // notifies user
-        generateNotification(context, message);
+        generateNotification(context, message, intent);
     }
 
     @Override
     protected void onDeletedMessages(Context context, int total) {
         Log.i(TAG, "Received deleted messages notification");
         String message = getString(R.string.gcm_deleted, total);
+        //generateNotification(context, message, intent);
         displayMessage(context, message);
-        // notifies user
-        generateNotification(context, message);
+
     }
 
     @Override
@@ -112,7 +115,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     /**
      * Issues a notification to inform the user that server has sent a message.
      */
-    private static void generateNotification(Context context, String message) {
+    private static void generateNotification(Context context, String message,Intent intent) {
         int icon = R.drawable.ic_stat_gcm;
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)
@@ -121,11 +124,16 @@ public class GCMIntentService extends GCMBaseIntentService {
         String title = context.getString(R.string.app_name);
         Intent notificationIntent = new Intent(context, MainActivity.class);
         // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent intent =
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        
+        if(intent.hasExtra(REQUEST_MESSAGE)) {
+        	notificationIntent.putExtra("request", "friend");
+        	notificationIntent.putExtra("message", message );
+        }
+        
+        PendingIntent pendIntent =
                 PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, title, message, intent);
+        notification.setLatestEventInfo(context, title, message, pendIntent);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notification);
     }
