@@ -204,6 +204,27 @@ public final class ServerUtilities {
            CommonUtilities.displayMessage(context, message);
         }
     }
+    
+    static void sendStatusUpdate(final Context context, final String regId, final String status) {
+        
+        String serverUrl = SERVER_URL + "/updateStatus";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("regId", regId);
+        params.put("status", status);
+
+        try {
+            post(serverUrl, params);
+        } catch (IOException e) {
+        	String message = context.getString(R.string.server_unregister_error,
+                    e.getMessage());
+        	if(e.getMessage().equalsIgnoreCase("33")) {
+        		
+        		message = context.getString(R.string.friend_req_same);
+        		
+        	} //TODO:UPDATE FEEDBACK CODE
+        
+        }
+    }
     /**
      * Issue a POST request to the server.
      *

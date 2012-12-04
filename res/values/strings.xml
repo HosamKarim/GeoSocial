@@ -35,4 +35,9 @@
  	<string name="friend_req_already">The Friend Request Has Already Been Sent!</string>
  	<string name="friend_req_sending_error">The Request Could Not Be Sent Right Now, Please Try Again Later!</string>
  	
+ 	<!-- Status Feedback Messages -->
+ 	<string name="status_update_successful">Status has been updated!</string>
+ 	<string name="status_update_fail">Error in status update! Try Again Later</string>
+ 	<string name="status_button_text">Update Status</string>
+ 	<string name="status_blank">Your Status Cannot Be Blank</string>
 </resources>

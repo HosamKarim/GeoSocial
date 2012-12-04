@@ -21,9 +21,18 @@
                 tools:context=".MainActivity" />
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/status"
                />
         </TableRow>
     </TableLayout>
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/status_button_text"/>
 
 </RelativeLayout>

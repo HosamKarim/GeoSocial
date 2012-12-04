@@ -17,23 +17,25 @@ public final class R {
     }
     public static final class id {
         public static final int details=0x7f070000;
-        public static final int display=0x7f070005;
-        public static final int friendNumber=0x7f070007;
-        public static final int menu_friends_list=0x7f07000b;
-        public static final int menu_main=0x7f070011;
-        public static final int menu_send_request=0x7f07000c;
-        public static final int menu_settings=0x7f07000a;
-        public static final int name=0x7f070001;
-        public static final int number=0x7f070003;
-        public static final int options_clear=0x7f07000f;
-        public static final int options_exit=0x7f070010;
-        public static final int options_register=0x7f07000d;
-        public static final int options_unregister=0x7f07000e;
-        public static final int register=0x7f070004;
-        public static final int registrationDetails=0x7f070002;
-        public static final int requestDisplay=0x7f070009;
-        public static final int send=0x7f070008;
-        public static final int tableRow1=0x7f070006;
+        public static final int display=0x7f070007;
+        public static final int friendNumber=0x7f070009;
+        public static final int menu_friends_list=0x7f07000d;
+        public static final int menu_main=0x7f070013;
+        public static final int menu_send_request=0x7f07000e;
+        public static final int menu_settings=0x7f07000c;
+        public static final int name=0x7f070004;
+        public static final int number=0x7f070005;
+        public static final int options_clear=0x7f070011;
+        public static final int options_exit=0x7f070012;
+        public static final int options_register=0x7f07000f;
+        public static final int options_unregister=0x7f070010;
+        public static final int register=0x7f070006;
+        public static final int registrationDetails=0x7f070003;
+        public static final int requestDisplay=0x7f07000b;
+        public static final int send=0x7f07000a;
+        public static final int status=0x7f070001;
+        public static final int tableRow1=0x7f070008;
+        public static final int update=0x7f070002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -78,6 +80,12 @@ public final class R {
         public static final int server_unregister_error=0x7f040015;
         public static final int server_unregistered=0x7f040013;
         public static final int status=0x7f040001;
+        public static final int status_blank=0x7f040022;
+        public static final int status_button_text=0x7f040021;
+        public static final int status_update_fail=0x7f040020;
+        /**  Status Feedback Messages 
+         */
+        public static final int status_update_successful=0x7f04001f;
         public static final int title_activity_main=0x7f040006;
     }
     public static final class style {
