@@ -28,10 +28,11 @@
     <string name="options_clear">Clear</string>
     <string name="options_exit">Exit</string>
     
+    <!-- Friend Request Return Messages -->
     <string name="friend_req_sent">Friend Request Sent!</string>
  	<string name="friend_req_not_found">The Friend You Were Looking For Could Not Be Found!</string>
  	<string name="friend_req_same">You Cannot Add Yourself As A Friend!</string>
  	<string name="friend_req_already">The Friend Request Has Already Been Sent!</string>
- 	
+ 	<string name="friend_req_sending_error">The Request Could Not Be Sent Right Now, Please Try Again Later!</string>
  	
 </resources>

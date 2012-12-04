@@ -138,19 +138,14 @@ public final class ServerUtilities {
         params.put("regId", regId);
         params.put("friend", friendNumber);
         params.put("respond", "Request"); //null indicates that a request is being made (Not fullfilled) 
-        int status;
+
         try {
             post(serverUrl, params);
-            //GCMRegistrar.setRegisteredOnServer(context, true);
+
             String message = context.getString(R.string.friend_req_sent);
-            //CommonUtilities.displayFeedbackToast(context, message);
+
             CommonUtilities.displayMessage(context, message);
         } catch (IOException e) {
-            // At this point the device is unregistered from GCM, but still
-            // registered in the server.
-            // We could try to unregister again, but it is not necessary:
-            // if the server tries to send a message to the device, it will get
-            // a "NotRegistered" error message and should unregister the device.
         	String message = context.getString(R.string.server_unregister_error,
                     e.getMessage());
         	if(e.getMessage().equalsIgnoreCase("33")) {
@@ -163,12 +158,52 @@ public final class ServerUtilities {
         	} else if (e.getMessage().equalsIgnoreCase("50"))  {
         		
         		message = context.getString(R.string.friend_req_already);
+        	}else if (e.getMessage().equalsIgnoreCase("3"))	{
+        		message = context.getString(R.string.friend_req_sending_error);
         	}
         	//CommonUtilities.displayFeedbackToast(context, message);
            CommonUtilities.displayMessage(context, message);
         }
     }
+    
+    static void sendConfirmRequest(final Context context, final String regId ) {
+        
+        String serverUrl = SERVER_URL + "/friendReq";
+        Map<String, String> params = new HashMap<String, String>();
+        
+        //Sending data to same servlet requires the same parameteres ad sendFriendRequest
+        params.put("regId", regId);
+        params.put("friend", "555"); //Dummy value
+        params.put("respond", "Response"); 
 
+
+        try {
+            post(serverUrl, params);
+          
+            String message = context.getString(R.string.friend_req_sent);
+            
+            CommonUtilities.displayMessage(context, message);
+        } catch (IOException e) {
+
+        	String message = context.getString(R.string.server_unregister_error,
+                    e.getMessage());
+        	if(e.getMessage().equalsIgnoreCase("33")) {
+        		
+        		message = context.getString(R.string.friend_req_same);
+        		
+        	} else if (e.getMessage().equalsIgnoreCase("404")) {
+        		
+        		message = context.getString(R.string.friend_req_not_found);
+        	} else if (e.getMessage().equalsIgnoreCase("50"))  {
+        		
+        		message = context.getString(R.string.friend_req_already);
+        	} else if (e.getMessage().equalsIgnoreCase("3"))	{
+        		message = context.getString(R.string.friend_req_sending_error);
+        	}
+
+           CommonUtilities.displayMessage(context, message);
+        }
+    }
     /**
      * Issue a POST request to the server.
      *

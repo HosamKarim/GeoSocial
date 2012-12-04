@@ -73,6 +73,7 @@ public class RegisterActivity extends Activity{
         if (regId.equals("")) {
             // Automatically registers application on startup.
             GCMRegistrar.register(this, SENDER_ID);
+            
         } else {
             // Device is already registered on GCM, check server.
         	isGCMRegistered = true;

@@ -52,6 +52,9 @@ public final class R {
         public static final int friend_req_already=0x7f04001d;
         public static final int friend_req_not_found=0x7f04001b;
         public static final int friend_req_same=0x7f04001c;
+        public static final int friend_req_sending_error=0x7f04001e;
+        /**  Friend Request Return Messages 
+         */
         public static final int friend_req_sent=0x7f04001a;
         public static final int gcm_deleted=0x7f040010;
         public static final int gcm_error=0x7f04000e;
