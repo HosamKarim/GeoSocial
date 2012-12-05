@@ -69,6 +69,7 @@ public class RegisterActivity extends Activity{
         
         registerReceiver(mHandleMessageReceiver,
                 new IntentFilter(DISPLAY_MESSAGE_ACTION));
+        
         final String regId = GCMRegistrar.getRegistrationId(this);
         if (regId.equals("")) {
             // Automatically registers application on startup.
@@ -148,7 +149,7 @@ public class RegisterActivity extends Activity{
             mRegisterTask.cancel(true);
         }
         unregisterReceiver(mHandleMessageReceiver);
-        GCMRegistrar.onDestroy(getApplicationContext());
+        //GCMRegistrar.onDestroy(getApplicationContext());
         super.onDestroy();
     }
     
@@ -185,9 +186,6 @@ public class RegisterActivity extends Activity{
 	                // unregistered callback upon completion, but
 	                // GCMIntentService.onUnregistered() will ignore it.\
 	    			
-	                if (!registered) {
-	                    GCMRegistrar.unregister(context);
-	                }
 	                return null;
 	            }
 	

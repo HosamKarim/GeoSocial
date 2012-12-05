@@ -51,13 +51,13 @@ public final class R {
         public static final int already_registered=0x7f04000a;
         public static final int app_name=0x7f040000;
         public static final int error_config=0x7f040009;
-        public static final int friend_req_already=0x7f04001d;
-        public static final int friend_req_not_found=0x7f04001b;
-        public static final int friend_req_same=0x7f04001c;
-        public static final int friend_req_sending_error=0x7f04001e;
+        public static final int friend_req_already=0x7f040020;
+        public static final int friend_req_not_found=0x7f04001e;
+        public static final int friend_req_same=0x7f04001f;
+        public static final int friend_req_sending_error=0x7f040021;
         /**  Friend Request Return Messages 
          */
-        public static final int friend_req_sent=0x7f04001a;
+        public static final int friend_req_sent=0x7f04001d;
         public static final int gcm_deleted=0x7f040010;
         public static final int gcm_error=0x7f04000e;
         public static final int gcm_message=0x7f04000d;
@@ -72,6 +72,11 @@ public final class R {
         public static final int options_register=0x7f040016;
         public static final int options_unregister=0x7f040017;
         public static final int phone_number=0x7f040007;
+        public static final int register_fail_Id=0x7f04001b;
+        public static final int register_fail_Number=0x7f04001c;
+        /**  Server Registration 
+         */
+        public static final int register_success=0x7f04001a;
         public static final int send_button=0x7f040008;
         public static final int send_request=0x7f040003;
         public static final int server_register_error=0x7f040014;
@@ -80,12 +85,12 @@ public final class R {
         public static final int server_unregister_error=0x7f040015;
         public static final int server_unregistered=0x7f040013;
         public static final int status=0x7f040001;
-        public static final int status_blank=0x7f040022;
-        public static final int status_button_text=0x7f040021;
-        public static final int status_update_fail=0x7f040020;
+        public static final int status_blank=0x7f040025;
+        public static final int status_button_text=0x7f040024;
+        public static final int status_update_fail=0x7f040023;
         /**  Status Feedback Messages 
          */
-        public static final int status_update_successful=0x7f04001f;
+        public static final int status_update_successful=0x7f040022;
         public static final int title_activity_main=0x7f040006;
     }
     public static final class style {

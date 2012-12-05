@@ -34,8 +34,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         status = (EditText) findViewById(R.id.status);
+       
         Button update = (Button) findViewById(R.id.update);
-        
+        update.setOnClickListener(onUpdate);
         registerReceiver(mHandleMessageReceiver,
                 new IntentFilter(DISPLAY_MESSAGE_ACTION));
         
@@ -161,7 +162,6 @@ public class MainActivity extends Activity {
 
             @Override
             protected void onPostExecute(Void result) {
-            	Toast.makeText(context, "Status Udpate Sent to Server!", Toast.LENGTH_LONG).show();
                 
             }
 

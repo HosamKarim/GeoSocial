@@ -63,7 +63,7 @@ public final class ServerUtilities {
         params.put("regId", regId);
         params.put("name", name);
         params.put("number", number);
-        int status;
+        
         long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
@@ -71,34 +71,46 @@ public final class ServerUtilities {
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
             Log.d(TAG, "Attempt #" + i + " to register");
             try {
-                displayMessage(context, context.getString(
-                        R.string.server_registering, i, MAX_ATTEMPTS));
+
                  post(serverUrl, params);
                 
                 GCMRegistrar.setRegisteredOnServer(context, true);
-                String message = context.getString(R.string.already_registered);
-                CommonUtilities.displayMessage(context, message);
+                
+                CommonUtilities.displayMessage(context, context.getString(R.string.register_success));
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
                 // application, it should retry only on unrecoverable errors
                 // (like HTTP error code 503).
                 Log.e(TAG, "Failed to register on attempt " + i, e);
-                if (i == MAX_ATTEMPTS) {
-                    break;
+                int returnCode = Integer.parseInt(e.getMessage());
+                
+                if( returnCode >= 500 && returnCode < 600 ){ //Recoverable Error(5xx) RETRY 
+	                if (i == MAX_ATTEMPTS) {
+	                    break;
+	                }
+	                try {
+	                    Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
+	                    Thread.sleep(backoff);
+	                } catch (InterruptedException e1) {
+	                    // Activity finished before we complete - exit.
+	                    Log.d(TAG, "Thread interrupted: abort remaining retries!");
+	                    Thread.currentThread().interrupt();
+	                    return false;
+	                }
+	                // increase backoff exponentially
+	                backoff *= 2;
+                } else {
+                	String message = "Registration: UNRECOVERABLE ERROR";
+                	if(e.getMessage().equals("99")){
+                		message = context.getString(R.string.register_fail_Id);
+                	}else if(e.getMessage().equals("77")) {
+                		message = context.getString(R.string.register_fail_Number);
+                	}
+                   CommonUtilities.displayMessage(context, message);
+                   return false;
                 }
-                try {
-                    Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
-                    Thread.sleep(backoff);
-                } catch (InterruptedException e1) {
-                    // Activity finished before we complete - exit.
-                    Log.d(TAG, "Thread interrupted: abort remaining retries!");
-                    Thread.currentThread().interrupt();
-                    return false;
-                }
-                // increase backoff exponentially
-                backoff *= 2;
-            }
+             }
         }
         String message = context.getString(R.string.server_register_error,
                 MAX_ATTEMPTS);
@@ -179,10 +191,7 @@ public final class ServerUtilities {
 
         try {
             post(serverUrl, params);
-          
-            String message = context.getString(R.string.friend_req_sent);
-            
-            CommonUtilities.displayMessage(context, message);
+            CommonUtilities.displayMessage(context, context.getString(R.string.friend_req_sent));
         } catch (IOException e) {
 
         	String message = context.getString(R.string.server_unregister_error,
@@ -214,15 +223,11 @@ public final class ServerUtilities {
 
         try {
             post(serverUrl, params);
+            CommonUtilities.displayMessage(context, context.getString(R.string.status_update_successful));
         } catch (IOException e) {
-        	String message = context.getString(R.string.server_unregister_error,
-                    e.getMessage());
-        	if(e.getMessage().equalsIgnoreCase("33")) {
-        		
-        		message = context.getString(R.string.friend_req_same);
-        		
-        	} //TODO:UPDATE FEEDBACK CODE
-        
+        	
+        	CommonUtilities.displayMessage(context, context.getString(R.string.status_update_fail));
+   
         }
     }
     /**
