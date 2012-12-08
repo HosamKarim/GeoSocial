@@ -2,8 +2,14 @@ package edu.mines.csci498.geosocial;
 
 import static edu.mines.csci498.geosocial.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.android.gcm.GCMRegistrar;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -27,6 +33,16 @@ public class MainActivity extends Activity {
 	
 	private AsyncTask<Void,Void,Void> mConfirmRequest;
 	private AsyncTask<Void,Void,Void> mUpdateStatus;
+	
+	LocationManager locMgr;
+	Location loc;
+	
+	List<Friend> friends = new ArrayList<Friend>();
+	
+	float result[];
+	
+	double lon = 0 , lat = 0, diameter = 5000;
+	
 	EditText status; 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +61,20 @@ public class MainActivity extends Activity {
     			String message = getIntent().getExtras().getString("message");
     			createAlertDialog(message);
         }
+        
+		locMgr = (LocationManager)getSystemService(LOCATION_SERVICE);
+		loc = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		
+		locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
+
+        
+		// - not tested
+		for(Friend f : friends) {
+			Location.distanceBetween(lat, lon, f.getLatitude(), f.getLongitude(), result);
+			if(result[0] <= diameter*1.60934) {
+				//status.add(f.getStatus());
+			}	
+		}
 
         
     }
@@ -59,6 +89,24 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, getString(R.string.status_blank), Toast.LENGTH_LONG).show();
 			}
 			
+		}
+	};
+	
+	LocationListener onLocationChange = new LocationListener() { 
+		public void onLocationChanged(Location current) {
+			lon = current.getLongitude();
+			lat = current.getLatitude();
+			
+		}
+		
+		public void onProviderDisabled(String provider) {
+			// required for interface, not used
+		}
+		public void onProviderEnabled(String provider) {
+			// required for interface, not used
+		}
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// required for interface, not used
 		}
 	};
     
@@ -87,12 +135,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
     	super.onResume(); 
-    	/*
-    	if(getIntent().hasExtra("request")) {
-    		String message = getIntent().getExtras().getString("message");
-    		createAlertDialog(message);
-    	}
-    	*/
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,17 +146,26 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	    
-    	if(item.getItemId() == R.id.menu_send_request){
+    	if(item.getItemId() == R.id.menu_send_request) {
     		
     		Intent menuRequest = new Intent(this,RequestActivity.class);
     		menuRequest.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
     		startActivity(menuRequest);
     		
-    	}else if (item.getItemId() == R.id.register){
+    	}else if (item.getItemId() == R.id.register) {
     		Intent menuRegister = new Intent(this,RegisterActivity.class);
     		menuRegister.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
     		Log.d("MainActivity", "Starting RegisterActivity");
     		startActivity(menuRegister);
+    	}else if (item.getItemId() == R.id.menu_friends_list) {
+    		Intent menuFriends = new Intent(this,FriendList.class);
+    		menuFriends.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		startActivity(menuFriends);
+    	}else if (item.getItemId() == R.id.menu_location) {
+    		lon = loc.getLongitude();
+			lat = loc.getLatitude();
+
+			Toast.makeText(this, "LON: " + lon + ", LAT: " + lat , Toast.LENGTH_LONG).show();
     	}
     	
     	
