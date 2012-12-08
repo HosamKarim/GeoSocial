@@ -180,37 +180,16 @@ public final class ServerUtilities {
     
     static void sendConfirmRequest(final Context context, final String regId ) {
         
-        String serverUrl = SERVER_URL + "/friendReq";
+        String serverUrl = SERVER_URL + "/confirmReq";
         Map<String, String> params = new HashMap<String, String>();
         
         //Sending data to same servlet requires the same parameteres ad sendFriendRequest
         params.put("regId", regId);
-        params.put("friend", "555"); //Dummy value
-        params.put("respond", "Response"); 
-
-
+        
         try {
             post(serverUrl, params);
-            CommonUtilities.displayMessage(context, context.getString(R.string.friend_req_sent));
         } catch (IOException e) {
-
-        	String message = context.getString(R.string.server_unregister_error,
-                    e.getMessage());
-        	if(e.getMessage().equalsIgnoreCase("33")) {
-        		
-        		message = context.getString(R.string.friend_req_same);
-        		
-        	} else if (e.getMessage().equalsIgnoreCase("404")) {
-        		
-        		message = context.getString(R.string.friend_req_not_found);
-        	} else if (e.getMessage().equalsIgnoreCase("50"))  {
-        		
-        		message = context.getString(R.string.friend_req_already);
-        	} else if (e.getMessage().equalsIgnoreCase("3"))	{
-        		message = context.getString(R.string.friend_req_sending_error);
-        	}
-
-           CommonUtilities.displayMessage(context, message);
+        	//Something should be done here 
         }
     }
     

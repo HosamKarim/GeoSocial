@@ -59,6 +59,7 @@ public class RequestActivity extends Activity{
 				final Context context = RequestActivity.this;
 				//ServerUtilities.sendFriendRequest(context,GCMRegistrar.getRegistrationId(RequestActivity.this), friendNumber.getText().toString());
 				sendRequest(GCMRegistrar.getRegistrationId(RequestActivity.this),friendNumber.getText().toString());
+				FriendList.addFriend(new Friend(friendNumber.getText().toString()));
 				//finish();
 			} else {
 				String message = "Friend's Number Field Must be Filled out";

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.google.android.gcm.GCMRegistrar;
 
+
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,12 +20,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -37,11 +42,14 @@ public class MainActivity extends Activity {
 	LocationManager locMgr;
 	Location loc;
 	
-	List<Friend> friends = new ArrayList<Friend>();
+	List<Friend> friends; 
 	
 	float result[];
 	
 	double lon = 0 , lat = 0, diameter = 5000;
+	
+	private String newFriendName;
+	private String newFriendNumber;
 	
 	EditText status; 
     @Override
@@ -59,6 +67,8 @@ public class MainActivity extends Activity {
         if(getIntent().hasExtra("request")) {
     		
     			String message = getIntent().getExtras().getString("message");
+    			newFriendName = getIntent().getStringExtra("friend");
+    			newFriendNumber = getIntent().getStringExtra("number");
     			createAlertDialog(message);
         }
         
@@ -66,16 +76,19 @@ public class MainActivity extends Activity {
 		loc = locMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		
 		locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
-
+		
+		friends = FriendList.getFriends();
         
+		
 		// - not tested
+		/*
 		for(Friend f : friends) {
 			Location.distanceBetween(lat, lon, f.getLatitude(), f.getLongitude(), result);
 			if(result[0] <= diameter*1.60934) {
 				//status.add(f.getStatus());
 			}	
 		}
-
+		*/
         
     }
     
@@ -128,6 +141,9 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
 			sendConfrimRequest(GCMRegistrar.getRegistrationId(MainActivity.this));
+			Friend newFriend = new Friend(newFriendName,newFriendNumber);
+			newFriend.confirmed();
+			FriendList.addFriend(newFriend);
 			
 		}
     	
@@ -158,8 +174,9 @@ public class MainActivity extends Activity {
     		Log.d("MainActivity", "Starting RegisterActivity");
     		startActivity(menuRegister);
     	}else if (item.getItemId() == R.id.menu_friends_list) {
-    		Intent menuFriends = new Intent(this,FriendList.class);
-    		menuFriends.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    		Intent menuFriends = new Intent(this,AllFriendsActivity.class);
+    		menuFriends.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    		
     		startActivity(menuFriends);
     	}else if (item.getItemId() == R.id.menu_location) {
     		lon = loc.getLongitude();

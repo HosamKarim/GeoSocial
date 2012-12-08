@@ -77,15 +77,22 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
         String message = getString(R.string.gcm_message);
-        
+        CommonUtilities.displayMessage(context, "MESSAGE RECIEVED FROM SERVER");
         if(intent.hasExtra(REQUEST_MESSAGE)){
-        	message = intent.getStringExtra("user") + " Wants to be Friends";
+        	if(intent.getStringExtra(REQUEST_MESSAGE).equals("friend")) {
+        		message = intent.getStringExtra("user") + " Wants to be Friends";
+        		generateNotification(context, message, intent);
+        	} else if(intent.getStringExtra(REQUEST_MESSAGE).equals("confirm")) {
+        		CommonUtilities.displayMessage(context, "SERVER MESSAGE FRIEND CONFIRMATION FROM: "+intent.getStringExtra("user") +" "+ intent.getStringExtra("number"));
+        		FriendList.friendConfirmed(intent.getStringExtra("user"), intent.getStringExtra("number"));
+        		
+        	}
         }
         
         //displayAlert(context, message);
         //displayMessage(context, message);
         // notifies user
-        generateNotification(context, message, intent);
+        
     }
 
     @Override
@@ -129,6 +136,8 @@ public class GCMIntentService extends GCMBaseIntentService {
         if(intent.hasExtra(REQUEST_MESSAGE)) {
         	notificationIntent.putExtra("request", "friend");
         	notificationIntent.putExtra("message", message );
+        	notificationIntent.putExtra("friend", intent.getStringExtra("user"));
+        	notificationIntent.putExtra("number", intent.getStringExtra("number"));
         }
         
         PendingIntent pendIntent =
