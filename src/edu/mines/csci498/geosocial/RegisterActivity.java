@@ -9,6 +9,7 @@ import static edu.mines.csci498.geosocial.CommonUtilities.SENDER_ID;
 import static edu.mines.csci498.geosocial.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 import static edu.mines.csci498.geosocial.CommonUtilities.SENDER_ID;
 import static edu.mines.csci498.geosocial.CommonUtilities.SERVER_URL;
+import static edu.mines.csci498.geosocial.CommonUtilities.regId;
 
 //import com.example.gcmtest.R;
 //import com.example.gcmtest.ServerUtilities;
@@ -38,7 +39,6 @@ public class RegisterActivity extends Activity{
     EditText name;
     EditText number; 
     AsyncTask<Void, Void, Void> mRegisterTask;
-    String registerId; 
     HandleMessageReceiver mHandleMessageReceiver = new HandleMessageReceiver();
     
     boolean isGCMRegistered = false;
@@ -70,15 +70,15 @@ public class RegisterActivity extends Activity{
         registerReceiver(mHandleMessageReceiver,
                 new IntentFilter(DISPLAY_MESSAGE_ACTION));
         
-        final String regId = GCMRegistrar.getRegistrationId(this);
+        regId = GCMRegistrar.getRegistrationId(this);
         if (regId.equals("")) {
             // Automatically registers application on startup.
             GCMRegistrar.register(this, SENDER_ID);
             
         } else {
             // Device is already registered on GCM, check server.
-        	isGCMRegistered = true;
-        	registerId = regId; 
+        	
+        	 
             if (GCMRegistrar.isRegisteredOnServer(this)) {
                 // Skips registration.
                 mDisplay.append(getString(R.string.already_registered) + "\n");
@@ -93,7 +93,7 @@ public class RegisterActivity extends Activity{
 		@Override
 		public void onClick(View v) {
 			if(!name.getText().toString().equals("") && !number.getText().toString().equals("")) {
-				registerOnServer(registerId,name.getText().toString(),number.getText().toString());
+				registerOnServer(regId,name.getText().toString(),number.getText().toString());
 				
 			} else {
 				String message = "Name and Number Fields Must be Filled Out!";
@@ -126,11 +126,11 @@ public class RegisterActivity extends Activity{
             case R.id.options_register:
                 GCMRegistrar.register(this, SENDER_ID);
                 String optionName = "FROM OPTIONS";
-                registerOnServer(registerId,optionName,optionName);
+                registerOnServer(regId,optionName,optionName);
                 return true;
             case R.id.options_unregister:
                 GCMRegistrar.unregister(this);
-                ServerUtilities.unregister(this, registerId);
+                ServerUtilities.unregister(this, regId);
                 return true;
             case R.id.options_clear:
                 mDisplay.setText(null);
@@ -168,7 +168,7 @@ public class RegisterActivity extends Activity{
         // Try to register again, but not in the UI thread.
         // It's also necessary to cancel the thread onDestroy(),
         // hence the use of AsyncTask instead of a raw thread.
-    	if(isGCMRegistered) {
+    
     		final Context context = this;
     		//boolean registered = ServerUtilities.register(context, regId, name, number);
     		
@@ -198,7 +198,7 @@ public class RegisterActivity extends Activity{
 	        };
 	        mRegisterTask.execute(null, null, null);
 	        
-    	}
+    	
     
     }   
 

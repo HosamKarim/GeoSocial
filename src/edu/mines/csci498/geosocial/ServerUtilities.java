@@ -189,16 +189,28 @@ public final class ServerUtilities {
         try {
             post(serverUrl, params);
         } catch (IOException e) {
-        	//Something should be done here 
+        	
+        	String message = context.getString(R.string.server_unregister_error,
+                    e.getMessage());
+        	if(e.getMessage() == null) {
+        		message = "NULL POINTER RETURNED"; 
+        	}else if (e.getMessage().equalsIgnoreCase("3"))	{
+        		message = context.getString(R.string.friend_req_sending_error);
+        	}
+
+           CommonUtilities.displayMessage(context, message);
+        	
         }
     }
     
-    static void sendStatusUpdate(final Context context, final String regId, final String status) {
+    static void sendStatusUpdate(final Context context, final String regId, final String status, final String lat, final String lon) {
         
         String serverUrl = SERVER_URL + "/updateStatus";
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         params.put("status", status);
+        params.put("latitude",lat);
+        params.put("longitude", lon);
 
         try {
             post(serverUrl, params);

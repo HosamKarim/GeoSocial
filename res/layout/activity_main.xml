@@ -5,8 +5,8 @@
 
     <TableLayout
         android:id="@+id/details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:shrinkColumns="1"
         android:stretchColumns="1" >
 
@@ -20,19 +20,32 @@
                 android:text="@string/status"
                 tools:context=".MainActivity" />
 
-            <EditText
-                android:id="@+id/status"
-               />
+            <EditText android:id="@+id/status" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:gravity="fill_horizontal" >
+            
+            <Button
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/status_button_text" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+            </ListView>
         </TableRow>
     </TableLayout>
-
-    <Button
-        android:id="@+id/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/status_button_text"/>
 
 </RelativeLayout>

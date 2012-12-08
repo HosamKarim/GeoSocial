@@ -26,6 +26,7 @@ import static  edu.mines.csci498.geosocial.CommonUtilities.SENDER_ID;
 import static edu.mines.csci498.geosocial.CommonUtilities.displayMessage;
 import static edu.mines.csci498.geosocial.CommonUtilities.displayAlert;
 import static edu.mines.csci498.geosocial.CommonUtilities.REQUEST_MESSAGE;
+import static edu.mines.csci498.geosocial.CommonUtilities.regId;
 
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -56,7 +57,9 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device GCM registered: regId = " + registrationId);
-        displayMessage(context, getString(R.string.gcm_registered));
+        regId = registrationId; 
+        displayMessage(context, getString(R.string.gcm_registered) );
+        
         //ServerUtilities.register(context, registrationId);
     }
 

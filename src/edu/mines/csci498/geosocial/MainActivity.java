@@ -1,11 +1,15 @@
 package edu.mines.csci498.geosocial;
 
 import static edu.mines.csci498.geosocial.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import static edu.mines.csci498.geosocial.CommonUtilities.regId;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.gcm.GCMRegistrar;
+
+import edu.mines.csci498.geosocial.AllFriendsActivity.FriendsAdapter;
+import edu.mines.csci498.geosocial.AllFriendsActivity.FriendsHolder;
 
 
 import android.location.Location;
@@ -29,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +48,7 @@ public class MainActivity extends Activity {
 	Location loc;
 	
 	List<Friend> friends; 
+	StatusAdapter adapter = null;
 	
 	float result[];
 	
@@ -51,7 +57,8 @@ public class MainActivity extends Activity {
 	private String newFriendName;
 	private String newFriendNumber;
 	
-	EditText status; 
+	EditText status;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +84,16 @@ public class MainActivity extends Activity {
 		
 		locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
 		
+		for(int i=0; i< 15; ++i) {
+			FriendList.addFriend(new Friend("Wahoo", "6348746"));
+			FriendList.addFriend(new Friend("mahdoo", "121212"));
+		}
+
 		friends = FriendList.getFriends();
         
-		
+		ListView list = (ListView)findViewById(R.id.list);
+		adapter = new StatusAdapter();
+		list.setAdapter(adapter);
 		// - not tested
 		/*
 		for(Friend f : friends) {
@@ -97,7 +111,10 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			if(!status.getText().toString().equals("")) {
-				sendUpdateStatus(GCMRegistrar.getRegistrationId(MainActivity.this),status.getText().toString());
+	    		lon = loc.getLongitude();
+				lat = loc.getLatitude();
+				
+				sendUpdateStatus(GCMRegistrar.getRegistrationId(MainActivity.this),status.getText().toString(),Double.toString(lat),Double.toString(lon));
 			} else {
 				Toast.makeText(MainActivity.this, getString(R.string.status_blank), Toast.LENGTH_LONG).show();
 			}
@@ -140,7 +157,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(DialogInterface arg0, int arg1) {
-			sendConfrimRequest(GCMRegistrar.getRegistrationId(MainActivity.this));
+			sendConfrimRequest(regId);
 			Friend newFriend = new Friend(newFriendName,newFriendNumber);
 			newFriend.confirmed();
 			FriendList.addFriend(newFriend);
@@ -214,7 +231,7 @@ public class MainActivity extends Activity {
 	        mConfirmRequest.execute(null, null, null);
     }
     
-    private void sendUpdateStatus(final String regId, final String status ) { 
+    private void sendUpdateStatus(final String regId, final String status, final String lat, final String lon ) { 
 
 		final Context context = this;
 		
@@ -224,7 +241,7 @@ public class MainActivity extends Activity {
 
             @Override
             protected Void doInBackground(Void... params) {
-                 ServerUtilities.sendStatusUpdate(context, regId,status);
+                 ServerUtilities.sendStatusUpdate(context, regId,status,lat,lon);
                         
                 return null;
             }
@@ -238,5 +255,49 @@ public class MainActivity extends Activity {
         mUpdateStatus.execute(null, null, null);
 }
     
+  //-- ADAPTER
+  	class StatusAdapter extends ArrayAdapter<Friend> {
+  		public StatusAdapter() {
+  			super(MainActivity.this, R.layout.friend_detail, friends);
+  		}
+  		
+  		@Override
+  		public View getView(int position, View convertView, ViewGroup parent) {
+  			View details = convertView;
+  			StatusHolder holder = null;
+  			
+  			if (details == null) {
+  				LayoutInflater inflater = getLayoutInflater();
+  				details = inflater.inflate(R.layout.friend_detail, parent, false); 
+  				holder = new StatusHolder(details); 
+  				details.setTag(holder);
+  			}
+  			
+  			else {
+  				holder = (StatusHolder)details.getTag();
+  			}
+  			
+  			holder.populateFrom(friends.get(position)); 
+  			
+  			return details;
+  		} 
+  	}
+  	
+    //-- HOLDER
+   	class StatusHolder {
+   		private TextView name = null;
+   		private TextView status = null;
+
+   		StatusHolder(View details) { 
+   			name = (TextView)details.findViewById(R.id.nameView); 
+   			status = (TextView)details.findViewById(R.id.phoneView); 
+
+   		}
+
+   		void populateFrom(Friend friend) { 			
+   			name.setText("" + friend.getName()); 
+   			status.setText("" + friend.getPhone());
+   		}
+   	}
     
 }

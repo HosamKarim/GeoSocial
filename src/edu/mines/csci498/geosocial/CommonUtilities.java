@@ -32,7 +32,7 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    public static final String SERVER_URL = "http://10.0.1.30:8080/gcm-demo";
+    public static final String SERVER_URL = "http://138.67.200.175:8080/gcm-demo";
 
     /**
      * Google API project id registered to use GCM.
@@ -49,13 +49,15 @@ public final class CommonUtilities {
      */
     public static final String DISPLAY_MESSAGE_ACTION =
             "com.google.android.gcm.demo.app.DISPLAY_MESSAGE";
-
+    
     /**
      * Intent's extra that contains the message to be displayed.
      */
     public static final String EXTRA_MESSAGE = "message";
 
     public static final String REQUEST_MESSAGE = "request";
+    
+    public static String regId; 
     /**
      * Notifies UI to display a message.
      * <p>
