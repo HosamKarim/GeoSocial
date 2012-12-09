@@ -45,13 +45,21 @@ public class FriendList {
 		}
 	}
 	
-	public Friend findFriendByName(String name) {
+	public static Friend findFriendByName(String name) {
 		for(Friend f : friends) {
 			if(f.getName().toString().equals(name)) {
 				return f;
 			}
 		}
 		return null;
+	}
+	
+	public static void updateFriend(Friend f) {
+		for(Friend s : friends) {
+			if(s.getName().toString().equals(f.getName()) && s.getPhone().toString().equals(f.getPhone())) {
+				s = f; 
+			}
+		}
 	}
 	
 

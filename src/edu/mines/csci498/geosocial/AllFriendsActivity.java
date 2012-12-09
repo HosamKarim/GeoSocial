@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+	import android.widget.TextView;
 
 public class AllFriendsActivity extends Activity {
 	
@@ -24,10 +24,9 @@ public class AllFriendsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		////TESTING
-		//friends.add(new Friend("Wahoo", "6348746"));
-		//friends.add(new Friend("mahdoo", "121212"));
-		FriendList.addFriend(new Friend("Wahoo", "6348746"));
-		FriendList.addFriend(new Friend("mahdoo", "121212"));
+		//FriendList.addFriend(new Friend("Wahoo", "6348746"));
+		//FriendList.addFriend(new Friend("Wahoo", "6348746"));
+		
 		friends = FriendList.getFriends();
 		setContentView(R.layout.friends_list);
 		ListView list = (ListView)findViewById(R.id.list);

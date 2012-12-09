@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
 	Location loc;
 	
 	List<Friend> friends; 
+	List<Friend> nearByFriends = new ArrayList<Friend>(); 
 	StatusAdapter adapter = null;
 	
 	float result[];
@@ -84,25 +85,20 @@ public class MainActivity extends Activity {
 		
 		locMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, onLocationChange);
 		
-		for(int i=0; i< 15; ++i) {
-			FriendList.addFriend(new Friend("Wahoo", "6348746"));
-			FriendList.addFriend(new Friend("mahdoo", "121212"));
-		}
-
 		friends = FriendList.getFriends();
         
 		ListView list = (ListView)findViewById(R.id.list);
 		adapter = new StatusAdapter();
 		list.setAdapter(adapter);
-		// - not tested
-		/*
+
+	/** Application Crashed once trying to calculate nearby friends 	
 		for(Friend f : friends) {
 			Location.distanceBetween(lat, lon, f.getLatitude(), f.getLongitude(), result);
 			if(result[0] <= diameter*1.60934) {
-				//status.add(f.getStatus());
+				nearByFriends.add(f);
 			}	
 		}
-		*/
+	*/	
         
     }
     
@@ -258,7 +254,7 @@ public class MainActivity extends Activity {
   //-- ADAPTER
   	class StatusAdapter extends ArrayAdapter<Friend> {
   		public StatusAdapter() {
-  			super(MainActivity.this, R.layout.friend_detail, friends);
+  			super(MainActivity.this, R.layout.status_row, friends);
   		}
   		
   		@Override
@@ -268,7 +264,7 @@ public class MainActivity extends Activity {
   			
   			if (details == null) {
   				LayoutInflater inflater = getLayoutInflater();
-  				details = inflater.inflate(R.layout.friend_detail, parent, false); 
+  				details = inflater.inflate(R.layout.status_row, parent, false); 
   				holder = new StatusHolder(details); 
   				details.setTag(holder);
   			}
@@ -289,14 +285,15 @@ public class MainActivity extends Activity {
    		private TextView status = null;
 
    		StatusHolder(View details) { 
-   			name = (TextView)details.findViewById(R.id.nameView); 
-   			status = (TextView)details.findViewById(R.id.phoneView); 
+   			name = (TextView)details.findViewById(R.id.nameStatus); 
+   			status = (TextView)details.findViewById(R.id.statusView); 
 
    		}
 
    		void populateFrom(Friend friend) { 			
    			name.setText("" + friend.getName()); 
-   			status.setText("" + friend.getPhone());
+   			status.setText("" + friend.getStatus());
+   			
    		}
    	}
     

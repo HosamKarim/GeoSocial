@@ -92,6 +92,18 @@ public class GCMIntentService extends GCMBaseIntentService {
         	}
         }
         
+        if(intent.hasExtra("numberFriends")) {
+        	int numFriends =  Integer.parseInt(intent.getStringExtra("numberFriends"));
+        	Friend temp; 
+        	for(int i=0;i<numFriends;++i) {
+        		temp = FriendList.findFriendByName(intent.getStringExtra("friendName"+Integer.toString(i)));
+        		temp.setStatus(intent.getStringExtra("friendStatus"+Integer.toString(i)));
+        		temp.setLatitude(Double.parseDouble(intent.getStringExtra("friendLatitude"+Integer.toString(i))));
+        		temp.setLongitude(Double.parseDouble(intent.getStringExtra("friendLongitude"+Integer.toString(i))));
+        		FriendList.updateFriend(temp);
+        	}
+        }
+        
         //displayAlert(context, message);
         //displayMessage(context, message);
         // notifies user
